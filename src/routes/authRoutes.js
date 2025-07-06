@@ -10,3 +10,4 @@ router.get("/me", authMiddleware, me);
 router.delete("/delete/:userId", authMiddleware, deleteAccount);
 
 module.exports = router;
+  

@@ -1,43 +1,51 @@
+const axios = require("axios");
 const bcrypt = require("bcrypt");
-const prisma = require("../prisma/client");
 const generateToken = require("../utils/generateToken");
 
+const DB_SERVICE_URL = process.env.DB_SERVICE_URL || "http://localhost:4001"; // 👈 port correct du service BDD
+
+// Register
 const register = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const existingUser = await prisma.user.findUnique({ where: { email } });
-    if (existingUser) {
+    // Vérifie si l'utilisateur existe déjà dans la base
+    const existing = await axios
+      .get(`${DB_SERVICE_URL}/api/users/email/${email}`)
+      .catch(() => null);
+
+    if (existing && existing.data) {
       return res.status(400).json({ error: "Cet utilisateur existe déjà." });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-      },
+    // Crée l'utilisateur via le service BDD
+    const { data: user } = await axios.post(`${DB_SERVICE_URL}/api/users`, {
+      email,
+      password: hashedPassword,
     });
 
     const token = generateToken(user.id);
 
     res.status(201).json({
       message: "Utilisateur créé avec succès",
-      user: { id: user.id, email: user.email },
+      user,
       token,
     });
   } catch (error) {
-    console.error("Erreur dans register:", error);
+    console.error("Erreur dans register:", error.response?.data || error);
     res.status(500).json({ error: "Erreur serveur" });
   }
 };
 
+// Login
 const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await prisma.user.findUnique({ where: { email } });
+    const { data: user } = await axios.get(`${DB_SERVICE_URL}/api/users/email/${email}`);
+
     if (!user) {
       return res.status(401).json({ error: "Email ou mot de passe invalide." });
     }
@@ -55,41 +63,33 @@ const login = async (req, res) => {
       token,
     });
   } catch (error) {
-    console.error("Erreur dans login:", error);
+    console.error("Erreur dans login:", error.response?.data || error);
     res.status(500).json({ error: "Erreur serveur" });
   }
 };
 
+// Me
 const me = async (req, res) => {
   try {
-    const user = await prisma.user.findUnique({
-      where: { id: req.user.id },
-      select: { id: true, email: true, createdAt: true },
-    });
-
+    const { data: user } = await axios.get(`${DB_SERVICE_URL}/api/users/${req.user.id}`);
     res.status(200).json({ user });
   } catch (error) {
-    console.error("Erreur dans me:", error);
+    console.error("Erreur dans me:", error.response?.data || error);
     res.status(500).json({ error: "Erreur serveur" });
   }
 };
 
+// Delete
 const deleteAccount = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-    if (!user) {
-      return res.status(404).json({ error: "Utilisateur non trouvé." });
-    }
-
-    await prisma.user.delete({ where: { id: userId } });
-
+    await axios.delete(`${DB_SERVICE_URL}/api/users/${userId}`);
     res.status(200).json({ message: "Compte supprimé avec succès." });
   } catch (error) {
-    console.error("Erreur dans deleteAccount:", error);
+    console.error("Erreur dans deleteAccount:", error.response?.data || error);
     res.status(500).json({ error: "Erreur serveur" });
   }
-}
+};
 
 module.exports = { register, login, me, deleteAccount };
