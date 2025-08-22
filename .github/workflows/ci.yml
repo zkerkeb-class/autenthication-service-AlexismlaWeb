@@ -1,0 +1,26 @@
+name: CI
+on:
+  push:
+    branches: [ "**" ]
+    paths:
+      - "**/*.js"
+      - "**/*.ts"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/**"
+  pull_request:
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci || npm i
+      - run: npm run lint --if-present
+      - run: npm test --if-present -- --ci --reporters=default
+      - run: npm run build --if-present
