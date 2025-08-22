@@ -1,5 +1,5 @@
 const axios = require("axios");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const crypto = require("crypto"); // Librairie native Node.js !
 const generateToken = require("../utils/generateToken");
 
@@ -8,7 +8,19 @@ const MAIL_SERVICE_URL = process.env.MAIL_SERVICE_URL || "http://localhost:4004"
 
 // REGISTER
 const register = async (req, res) => {
-  const { email, password } = req.body;
+  const { 
+    email, 
+    password,
+    genre,
+    age,
+    taille,
+    poids,
+    morphologie,
+    stylesPreferes = [],
+    couleursMotifs = [],
+    restrictions,
+    ville
+  } = req.body;
 
   try {
     const existing = await axios.get(`${DB_SERVICE_URL}/api/users/email/${email}`).catch(() => null);
@@ -19,18 +31,27 @@ const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const emailVerifyToken = crypto.randomBytes(24).toString("hex"); 
 
-    // Crée l'utilisateur en BDD avec le token de vérif
+    // Crée l'utilisateur en BDD avec le token de vérif et tous les nouveaux champs
     const { data: user } = await axios.post(`${DB_SERVICE_URL}/api/users`, {
       email,
       password: hashedPassword,
       emailVerifyToken,
+      genre,
+      age,
+      taille,
+      poids,
+      morphologie,
+      stylesPreferes,
+      couleursMotifs,
+      restrictions,
+      ville
     });
 
     // Envoi du mail de confirmation
     await axios.post(`${MAIL_SERVICE_URL}/api/mail/send`, {
       to: email,
       subject: "Confirme ton adresse e-mail",
-      text: `Bienvenue ! Voici ton code de confirmation : ${emailVerifyToken}\n\nEntre ce code dans l’application pour valider ton compte.`,
+      text: `Bienvenue ! Voici ton code de confirmation : ${emailVerifyToken}\n\nEntre ce code dans l'application pour valider ton compte.`,
     });
 
     const token = generateToken(user.id);
