@@ -1,0 +1,26 @@
+version: 2
+updates:
+  # Enable version updates for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    assignees:
+      - "alexis_mla"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "npm"
+    ignore:
+      # Ignore major version updates for critical packages
+      - dependency-name: "express"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "jsonwebtoken"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "bcryptjs"
+        update-types: ["version-update:semver-major"]
