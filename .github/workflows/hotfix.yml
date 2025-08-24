@@ -1,0 +1,77 @@
+name: Hotfix Pipeline
+
+on:
+  push:
+    branches:
+      - 'hotfix/**'
+
+jobs:
+  hotfix:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Setup Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run tests
+        run: npm test -- --runInBand
+        
+      - name: Build (if present)
+        run: npm run build --if-present
+        
+      - name: Bump version (PATCH)
+        id: bump
+        uses: phips28/gh-action-bump-version@master
+        with:
+          commit-message: 'chore(release): [skip ci] bump version to {{version}}'
+          tag-prefix: 'v'
+          minor-when: 'false'
+          major-when: 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: build-artifacts
+          path: |
+            dist/**
+            build/**
+          retention-days: 30
+          
+      - name: Create Release
+        uses: actions/create-release@v1
+        if: steps.bump.outputs.changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.bump.outputs.newTag }}
+          release_name: Release ${{ steps.bump.outputs.newTag }}
+          body: |
+            ## Hotfix Release ${{ steps.bump.outputs.newTag }}
+            
+            This is an automated hotfix release.
+            
+            ### Changes:
+            - Critical bug fixes
+            - Security patches
+            
+            ### Deployment:
+            - [ ] Deploy to staging
+            - [ ] Run smoke tests
+            - [ ] Deploy to production
+            - [ ] Monitor for 24h
+          draft: false
+          prerelease: false
