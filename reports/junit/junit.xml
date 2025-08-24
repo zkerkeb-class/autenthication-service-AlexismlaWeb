@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="28" failures="0" errors="0" time="0.821">
-  <testsuite name="bcryptjs hash/compare" errors="0" failures="0" skipped="0" timestamp="2025-08-24T15:24:03" time="0.513" tests="3">
-    <testcase classname="bcryptjs hash/compare hash/compare works with valid password" name="bcryptjs hash/compare hash/compare works with valid password" time="0.145">
+<testsuites name="jest tests" tests="28" failures="0" errors="0" time="0.926">
+  <testsuite name="bcryptjs hash/compare" errors="0" failures="0" skipped="0" timestamp="2025-08-24T19:06:23" time="0.557" tests="3">
+    <testcase classname="bcryptjs hash/compare hash/compare works with valid password" name="bcryptjs hash/compare hash/compare works with valid password" time="0.163">
     </testcase>
-    <testcase classname="bcryptjs hash/compare compare returns false for wrong password" name="bcryptjs hash/compare compare returns false for wrong password" time="0.131">
+    <testcase classname="bcryptjs hash/compare compare returns false for wrong password" name="bcryptjs hash/compare compare returns false for wrong password" time="0.145">
     </testcase>
-    <testcase classname="bcryptjs hash/compare hash generates different results for same password" name="bcryptjs hash/compare hash generates different results for same password" time="0.131">
+    <testcase classname="bcryptjs hash/compare hash generates different results for same password" name="bcryptjs hash/compare hash generates different results for same password" time="0.135">
     </testcase>
   </testsuite>
-  <testsuite name="AuthController - Additional Tests" errors="0" failures="0" skipped="0" timestamp="2025-08-24T15:24:03" time="0.109" tests="6">
-    <testcase classname="AuthController - Additional Tests register should handle server error during registration" name="AuthController - Additional Tests register should handle server error during registration" time="0.001">
+  <testsuite name="AuthController - Additional Tests" errors="0" failures="0" skipped="0" timestamp="2025-08-24T19:06:23" time="0.128" tests="6">
+    <testcase classname="AuthController - Additional Tests register should handle server error during registration" name="AuthController - Additional Tests register should handle server error during registration" time="0.013">
     </testcase>
-    <testcase classname="AuthController - Additional Tests login should handle server error during login" name="AuthController - Additional Tests login should handle server error during login" time="0">
+    <testcase classname="AuthController - Additional Tests login should handle server error during login" name="AuthController - Additional Tests login should handle server error during login" time="0.001">
     </testcase>
-    <testcase classname="AuthController - Additional Tests me should handle server error during me" name="AuthController - Additional Tests me should handle server error during me" time="0.001">
+    <testcase classname="AuthController - Additional Tests me should handle server error during me" name="AuthController - Additional Tests me should handle server error during me" time="0">
     </testcase>
-    <testcase classname="AuthController - Additional Tests deleteAccount should handle server error during delete" name="AuthController - Additional Tests deleteAccount should handle server error during delete" time="0">
+    <testcase classname="AuthController - Additional Tests deleteAccount should handle server error during delete" name="AuthController - Additional Tests deleteAccount should handle server error during delete" time="0.001">
     </testcase>
     <testcase classname="AuthController - Additional Tests forgotPassword should handle server error during forgot password" name="AuthController - Additional Tests forgotPassword should handle server error during forgot password" time="0.001">
     </testcase>
-    <testcase classname="AuthController - Additional Tests resetPassword should handle server error during reset password" name="AuthController - Additional Tests resetPassword should handle server error during reset password" time="0">
+    <testcase classname="AuthController - Additional Tests resetPassword should handle server error during reset password" name="AuthController - Additional Tests resetPassword should handle server error during reset password" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="AuthRoutes" errors="0" failures="0" skipped="0" timestamp="2025-08-24T15:24:03" time="0.085" tests="8">
-    <testcase classname="AuthRoutes should export router" name="AuthRoutes should export router" time="0.001">
+  <testsuite name="AuthRoutes" errors="0" failures="0" skipped="0" timestamp="2025-08-24T19:06:23" time="0.1" tests="8">
+    <testcase classname="AuthRoutes should export router" name="AuthRoutes should export router" time="0">
     </testcase>
     <testcase classname="AuthRoutes should have register route" name="AuthRoutes should have register route" time="0">
     </testcase>
@@ -37,17 +37,17 @@
     </testcase>
     <testcase classname="AuthRoutes should have resetPassword route" name="AuthRoutes should have resetPassword route" time="0">
     </testcase>
-    <testcase classname="AuthRoutes should have verifyEmail route" name="AuthRoutes should have verifyEmail route" time="0">
+    <testcase classname="AuthRoutes should have verifyEmail route" name="AuthRoutes should have verifyEmail route" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="AuthController" errors="0" failures="0" skipped="0" timestamp="2025-08-24T15:24:03" time="0.048" tests="8">
-    <testcase classname="AuthController register should return error if user already exists" name="AuthController register should return error if user already exists" time="0.001">
+  <testsuite name="AuthController" errors="0" failures="0" skipped="0" timestamp="2025-08-24T19:06:23" time="0.052" tests="8">
+    <testcase classname="AuthController register should return error if user already exists" name="AuthController register should return error if user already exists" time="0">
     </testcase>
     <testcase classname="AuthController login should return error for invalid credentials" name="AuthController login should return error for invalid credentials" time="0">
     </testcase>
     <testcase classname="AuthController login should return error for wrong password" name="AuthController login should return error for wrong password" time="0">
     </testcase>
-    <testcase classname="AuthController me should return user profile" name="AuthController me should return user profile" time="0">
+    <testcase classname="AuthController me should return user profile" name="AuthController me should return user profile" time="0.001">
     </testcase>
     <testcase classname="AuthController deleteAccount should delete account successfully" name="AuthController deleteAccount should delete account successfully" time="0">
     </testcase>
@@ -58,8 +58,8 @@
     <testcase classname="AuthController resetPassword should return error for expired token" name="AuthController resetPassword should return error for expired token" time="0">
     </testcase>
   </testsuite>
-  <testsuite name="AuthMiddleware" errors="0" failures="0" skipped="0" timestamp="2025-08-24T15:24:04" time="0.023" tests="3">
-    <testcase classname="AuthMiddleware should return 401 for missing authorization header" name="AuthMiddleware should return 401 for missing authorization header" time="0">
+  <testsuite name="AuthMiddleware" errors="0" failures="0" skipped="0" timestamp="2025-08-24T19:06:24" time="0.024" tests="3">
+    <testcase classname="AuthMiddleware should return 401 for missing authorization header" name="AuthMiddleware should return 401 for missing authorization header" time="0.001">
     </testcase>
     <testcase classname="AuthMiddleware should return 401 for invalid authorization format" name="AuthMiddleware should return 401 for invalid authorization format" time="0">
     </testcase>
